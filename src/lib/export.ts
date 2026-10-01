@@ -1,0 +1,143 @@
+import { FILE_HEADERS_ONLY, createTwoFilesPatch, diffLines, diffWordsWithSpace } from 'diff'
+
+export interface ExportNames {
+  left: string
+  right: string
+}
+
+/** Unified diff in the format `git apply` and `patch -p1` accept. */
+export function unifiedPatch(left: string, right: string, names: ExportNames, context = 3): string {
+  return createTwoFilesPatch(`a/${names.left}`, `b/${names.right}`, left, right, undefined, undefined, {
+    context,
+    headerOptions: FILE_HEADERS_ONLY,
+  })
+}
+
+const escapeHtml = (s: string) =>
+  s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!)
+
+const splitLines = (value: string) => {
+  const lines = value.split('\n')
+  if (lines.at(-1) === '') lines.pop()
+  return lines
+}
+
+type Row =
+  | { kind: 'same'; a: number; b: number; text: string }
+  | { kind: 'change'; a?: number; b?: number; left?: string; right?: string }
+
+export function diffRows(left: string, right: string): Row[] {
+  const rows: Row[] = []
+  let a = 1
+  let b = 1
+  const parts = diffLines(left, right)
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i]
+    if (!part.added && !part.removed) {
+      for (const text of splitLines(part.value)) rows.push({ kind: 'same', a: a++, b: b++, text })
+      continue
+    }
+    // Pair a removal with the addition that follows it so edited lines sit side by side.
+    const removed = part.removed ? splitLines(part.value) : []
+    const next = part.removed ? parts[i + 1] : part
+    const added = next?.added ? splitLines(next.value) : []
+    if (part.removed && next?.added) i++
+    for (let j = 0; j < Math.max(removed.length, added.length); j++) {
+      const row: Row = { kind: 'change' }
+      if (j < removed.length) Object.assign(row, { a: a++, left: removed[j] })
+      if (j < added.length) Object.assign(row, { b: b++, right: added[j] })
+      rows.push(row)
+    }
+  }
+  return rows
+}
+
+function inlineHighlight(left: string, right: string): [string, string] {
+  let l = ''
+  let r = ''
+  for (const part of diffWordsWithSpace(left, right)) {
+    const text = escapeHtml(part.value)
+    if (part.removed) l += `<del>${text}</del>`
+    else if (part.added) r += `<ins>${text}</ins>`
+    else {
+      l += text
+      r += text
+    }
+  }
+  return [l, r]
+}
+
+const REPORT_CSS = `
+:root{color-scheme:light dark;--bg:#fff;--fg:#18181b;--muted:#71717a;--line:#e4e4e7;--del:#fef2f2;--delw:#fecaca;--ins:#ecfdf5;--insw:#a7f3d0;--pad:#f4f4f5}
+@media (prefers-color-scheme:dark){:root{--bg:#09090b;--fg:#e4e4e7;--muted:#71717a;--line:#27272a;--del:#3b1219;--delw:#7f1d1d;--ins:#052e1f;--insw:#065f46;--pad:#18181b}}
+body{margin:0;padding:24px;background:var(--bg);color:var(--fg);font:14px/1.5 system-ui,sans-serif}
+h1{font-size:18px;margin:0 0 4px}p{margin:0 0 16px;color:var(--muted)}
+.add{color:#059669}.rem{color:#dc2626}
+table{width:100%;border-collapse:collapse;table-layout:fixed;font:12px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;border:1px solid var(--line)}
+th{position:sticky;top:0;background:var(--bg);text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);font:600 12px system-ui,sans-serif}
+td{padding:0 8px;vertical-align:top;white-space:pre-wrap;word-break:break-word}
+td.n{width:3.5em;text-align:right;color:var(--muted);user-select:none;border-right:1px solid var(--line)}
+td.d{background:var(--del)}td.i{background:var(--ins)}td.e{background:var(--pad)}
+del{background:var(--delw);text-decoration:none}ins{background:var(--insw);text-decoration:none}
+`
+
+/** Self-contained side-by-side HTML report; no external assets so it opens offline. */
+export function htmlReport(left: string, right: string, names: ExportNames): string {
+  const rows = diffRows(left, right)
+  let removals = 0
+  let additions = 0
+  const body = rows
+    .map((row) => {
+      if (row.kind === 'same') {
+        const t = escapeHtml(row.text)
+        return `<tr><td class="n">${row.a}</td><td>${t}</td><td class="n">${row.b}</td><td>${t}</td></tr>`
+      }
+      if (row.left !== undefined) removals++
+      if (row.right !== undefined) additions++
+      const [l, r] =
+        row.left !== undefined && row.right !== undefined
+          ? inlineHighlight(row.left, row.right)
+          : [escapeHtml(row.left ?? ''), escapeHtml(row.right ?? '')]
+      const lc = row.left === undefined ? 'e' : 'd'
+      const rc = row.right === undefined ? 'e' : 'i'
+      return `<tr><td class="n ${lc}">${row.a ?? ''}</td><td class="${lc}">${l}</td><td class="n ${rc}">${row.b ?? ''}</td><td class="${rc}">${r}</td></tr>`
+    })
+    .join('\n')
+
+  const title = `${escapeHtml(names.left)} ↔ ${escapeHtml(names.right)}`
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diff: ${title}</title>
+<style>${REPORT_CSS}</style>
+</head>
+<body>
+<h1>${title}</h1>
+<p><span class="rem">−${removals} removals</span> · <span class="add">+${additions} additions</span> · generated by sidebyside</p>
+<table>
+<colgroup><col style="width:3.5em"><col><col style="width:3.5em"><col></colgroup>
+<thead><tr><th colspan="2">${escapeHtml(names.left)}</th><th colspan="2">${escapeHtml(names.right)}</th></tr></thead>
+<tbody>
+${body}
+</tbody>
+</table>
+</body>
+</html>
+`
+}
+
+/** Trigger a browser download of in-memory text. */
+export function downloadText(filename: string, text: string, type = 'text/plain') {
+  const url = URL.createObjectURL(new Blob([text], { type: `${type};charset=utf-8` }))
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename
+  a.click()
+  // Revoke after the click has been handled so the download is not cancelled.
+  setTimeout(() => URL.revokeObjectURL(url), 0)
+}
+
+/** Base name for export files, e.g. "config.yaml" -> "config". */
+export const stem = (name: string) => name.replace(/\.[^./]+$/, '') || name

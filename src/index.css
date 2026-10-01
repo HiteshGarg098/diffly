@@ -1,0 +1,357 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* Let the merge view fill its container and scroll as one unit. */
+.diff-host .cm-mergeView,
+.diff-host > .cm-editor {
+  min-height: 100%;
+}
+.diff-host .cm-mergeView {
+  display: flex;
+  flex-direction: column;
+}
+.diff-host .cm-mergeViewEditors {
+  flex: 1;
+}
+.diff-host .cm-mergeViewEditor {
+  @apply bg-white dark:bg-zinc-900;
+}
+
+/* Split gutter: ribbons (svg, painted by DiffView) under round merge buttons. */
+.diff-host .cm-mergeView {
+  position: relative;
+}
+.diff-host .cm-merge-revert {
+  z-index: 1;
+  width: 2.75rem;
+}
+.diff-host .cm-merge-revert button {
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  margin: 2px 0 0 -11px;
+  line-height: 20px;
+  @apply rounded-full border border-zinc-200 bg-white text-xs text-indigo-600 shadow-sm transition-transform hover:scale-110 hover:border-indigo-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-400;
+}
+.sbs-ribbons {
+  position: absolute;
+  top: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.sbs-ribbons path {
+  opacity: 0.22;
+  transition: opacity 150ms;
+}
+.sbs-ribbons path.current {
+  opacity: 0.55;
+}
+.dark .sbs-ribbons path {
+  opacity: 0.3;
+}
+.dark .sbs-ribbons path.current {
+  opacity: 0.7;
+}
+
+/* Jump pulse (alternating names restart the animation) and merge slide-in. */
+.cm-line.cm-pulse-a {
+  animation: sbs-pulse-a 0.9s ease-out;
+}
+.cm-line.cm-pulse-b {
+  animation: sbs-pulse-b 0.9s ease-out;
+}
+.cm-line.cm-merged-from-right {
+  animation: sbs-slide-right 1.1s ease-out;
+}
+.cm-line.cm-merged-from-left {
+  animation: sbs-slide-left 1.1s ease-out;
+}
+@keyframes sbs-pulse-a {
+  from {
+    box-shadow:
+      inset 0 0 0 999px rgb(99 102 241 / 0.22),
+      inset 3px 0 #6366f1;
+  }
+  to {
+    box-shadow:
+      inset 0 0 0 999px rgb(99 102 241 / 0),
+      inset 3px 0 rgb(99 102 241 / 0);
+  }
+}
+@keyframes sbs-pulse-b {
+  from {
+    box-shadow:
+      inset 0 0 0 999px rgb(99 102 241 / 0.22),
+      inset 3px 0 #6366f1;
+  }
+  to {
+    box-shadow:
+      inset 0 0 0 999px rgb(99 102 241 / 0),
+      inset 3px 0 rgb(99 102 241 / 0);
+  }
+}
+@keyframes sbs-slide-right {
+  from {
+    transform: translateX(24px);
+    opacity: 0;
+    box-shadow: inset 0 0 0 999px rgb(52 211 153 / 0.35);
+  }
+  35% {
+    transform: none;
+    opacity: 1;
+  }
+  to {
+    box-shadow: inset 0 0 0 999px rgb(52 211 153 / 0);
+  }
+}
+@keyframes sbs-slide-left {
+  from {
+    transform: translateX(-24px);
+    opacity: 0;
+    box-shadow: inset 0 0 0 999px rgb(52 211 153 / 0.35);
+  }
+  35% {
+    transform: none;
+    opacity: 1;
+  }
+  to {
+    box-shadow: inset 0 0 0 999px rgb(52 211 153 / 0);
+  }
+}
+
+/* Mascot: Minus and Plus. */
+.mascot g {
+  transform-box: fill-box;
+}
+.mascot .m-bar {
+  transform-origin: 50% 100%;
+}
+.mascot .m-eyes {
+  transform-origin: 50% 50%;
+  animation: m-blink 4s infinite;
+}
+.mascot .m-plus .m-eyes {
+  animation-delay: -1.3s;
+}
+.mascot-idle .m-bar {
+  animation: m-bounce 1.6s ease-in-out infinite;
+}
+.mascot-idle .m-plus {
+  animation-delay: -0.8s;
+}
+.mascot-scanning .m-bar {
+  animation: m-bounce 0.8s ease-in-out infinite;
+}
+.mascot-scanning .m-plus {
+  animation-delay: -0.4s;
+}
+.mascot-scanning .m-eyes {
+  animation: m-scan 0.9s ease-in-out infinite;
+}
+.mascot-found .m-minus {
+  animation: m-tilt-l 3s ease-in-out infinite;
+}
+.mascot-found .m-plus {
+  animation: m-tilt-r 3s ease-in-out infinite;
+}
+.mascot-found .m-minus .m-eyes {
+  animation: m-look-l 3s ease-in-out infinite;
+}
+.mascot-found .m-plus .m-eyes {
+  animation: m-look-r 3s ease-in-out infinite;
+}
+.mascot-identical .m-minus {
+  animation: m-hug-l 1.4s ease-in-out infinite;
+}
+.mascot-identical .m-plus {
+  animation: m-hug-r 1.4s ease-in-out infinite;
+}
+.mascot-identical .m-sparkles path {
+  transform-origin: 50% 50%;
+  animation: m-sparkle 1.4s ease-in-out infinite;
+}
+.mascot-identical .m-sparkles path:nth-child(2) {
+  animation-delay: -0.5s;
+}
+.mascot-identical .m-sparkles path:nth-child(3) {
+  animation-delay: -0.9s;
+}
+.mascot-merging .m-plus {
+  animation: m-merge 1.1s ease-in-out;
+}
+.mascot-merging .m-minus {
+  transform-origin: 0% 100%;
+  animation: m-squish 1.1s ease-in-out;
+}
+@keyframes m-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+@keyframes m-blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.1);
+  }
+}
+@keyframes m-scan {
+  0%,
+  100% {
+    transform: translateX(-2px);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+}
+@keyframes m-look-l {
+  0%,
+  30%,
+  100% {
+    transform: translateX(0);
+  }
+  45%,
+  85% {
+    transform: translateX(2px);
+  }
+}
+@keyframes m-look-r {
+  0%,
+  30%,
+  100% {
+    transform: translateX(0);
+  }
+  45%,
+  85% {
+    transform: translateX(-2px);
+  }
+}
+@keyframes m-tilt-l {
+  0%,
+  30%,
+  100% {
+    transform: rotate(0deg);
+  }
+  45%,
+  85% {
+    transform: rotate(4deg);
+  }
+}
+@keyframes m-tilt-r {
+  0%,
+  30%,
+  100% {
+    transform: rotate(0deg);
+  }
+  45%,
+  85% {
+    transform: rotate(-4deg);
+  }
+}
+@keyframes m-hug-l {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  50% {
+    transform: translateX(3px) rotate(5deg);
+  }
+}
+@keyframes m-hug-r {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  50% {
+    transform: translateX(-3px) rotate(-5deg);
+  }
+}
+@keyframes m-sparkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes m-merge {
+  0%,
+  15% {
+    transform: translateX(0);
+  }
+  45%,
+  60% {
+    transform: translateX(-12px);
+  }
+  90%,
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes m-squish {
+  0%,
+  15%,
+  90%,
+  100% {
+    transform: scaleX(1);
+  }
+  45%,
+  60% {
+    transform: scaleX(1.12);
+  }
+}
+
+@keyframes sbs-toast-in {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+}
+.sbs-toast {
+  animation: sbs-toast-in 200ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mascot *,
+  .cm-line,
+  .sbs-toast {
+    animation: none !important;
+  }
+}
+
+.diff-host .cm-chunkButtons button {
+  @apply mx-0.5 rounded border-0 px-2 py-0.5 font-sans text-xs font-medium text-white;
+}
+.diff-host .cm-chunkButtons button[name='accept'] {
+  @apply bg-emerald-600 hover:bg-emerald-500;
+}
+.diff-host .cm-chunkButtons button[name='reject'] {
+  @apply bg-zinc-500 hover:bg-zinc-400;
+}
+
+body {
+  @apply bg-zinc-50 text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100;
+  font-family: var(--font-sans);
+}
