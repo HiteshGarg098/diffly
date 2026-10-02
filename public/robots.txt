@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hiteshgarg098.github.io/diffly/sitemap.xml

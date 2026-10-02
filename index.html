@@ -4,8 +4,32 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Compare and merge text side by side. Runs entirely in your browser." />
-    <title>diffly</title>
+
+    <!-- SEO -->
+    <title>diffly — Free Online Diff Checker &amp; Text Compare Tool</title>
+    <meta name="description" content="Compare and merge text side by side with syntax highlighting for 30+ languages. 100% private — runs entirely in your browser. Free alternative to Diffchecker." />
+    <link rel="canonical" href="https://hiteshgarg098.github.io/diffly/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="diffly — Free Online Diff Checker" />
+    <meta property="og:description" content="Compare and merge text privately in your browser. Syntax highlighting, merge controls, export to patch — no sign-up, no server." />
+    <meta property="og:url" content="https://hiteshgarg098.github.io/diffly/" />
+    <meta property="og:image" content="https://hiteshgarg098.github.io/diffly/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="diffly" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="diffly — Free Online Diff Checker" />
+    <meta name="twitter:description" content="Compare and merge text privately in your browser. Free, fast, no sign-up." />
+    <meta name="twitter:image" content="https://hiteshgarg098.github.io/diffly/og-image.png" />
+
+    <!-- Misc -->
+    <meta name="theme-color" content="#863bff" />
+    <link rel="manifest" href="/manifest.json" />
+
     <script>
       // Apply saved/system theme before paint to avoid a flash.
       try {
@@ -14,9 +38,54 @@
         document.documentElement.classList.toggle('dark', dark)
       } catch {}
     </script>
+
+    <!-- JSON-LD structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "diffly",
+      "url": "https://hiteshgarg098.github.io/diffly/",
+      "description": "Compare and merge text side by side with syntax highlighting for 30+ languages. 100% private — runs entirely in your browser.",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "browserRequirements": "Requires a modern browser with JavaScript enabled",
+      "featureList": [
+        "Side-by-side and unified diff views",
+        "Syntax highlighting for 30+ languages",
+        "Merge individual changes or take all",
+        "Export as .patch or HTML report",
+        "Share via URL fragment (never sent to server)",
+        "100% client-side — text never leaves the browser"
+      ]
+    }
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Pre-rendered landing content for SEO — React replaces this on mount -->
+      <div style="max-width:640px;margin:80px auto;padding:0 24px;font-family:system-ui,sans-serif;color:#3f3f46;text-align:center">
+        <h1 style="font-size:2rem;font-weight:700;margin:0 0 12px">diffly</h1>
+        <p style="font-size:1.125rem;margin:0 0 24px;color:#71717a">
+          Free online diff checker &amp; text compare tool. Paste two texts, find
+          every difference, merge changes — with syntax highlighting for 30+
+          languages. <strong>100% private:</strong> your text never leaves your browser.
+        </p>
+        <ul style="text-align:left;margin:0 auto;max-width:440px;line-height:2;color:#52525b">
+          <li>↔️ Split &amp; unified diff views</li>
+          <li>🔀 Cherry-pick or take-all merge</li>
+          <li>🎨 Auto-detect 30+ languages</li>
+          <li>📋 Export to <code>.patch</code> or HTML report</li>
+          <li>🔗 Share via link (text stays in the URL fragment, never sent to a server)</li>
+          <li>🔒 No server, no tracking, no sign-up</li>
+          <li>⚡ 10k-line diffs in ~1 second</li>
+        </ul>
+        <noscript>
+          <p style="margin-top:24px;color:#ef4444">diffly requires JavaScript to run. Please enable it in your browser settings.</p>
+        </noscript>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

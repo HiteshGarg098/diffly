@@ -1,0 +1,16 @@
+{
+  "name": "diffly",
+  "short_name": "diffly",
+  "description": "Free online diff checker & text compare tool. 100% private — runs entirely in your browser.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#863bff",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
