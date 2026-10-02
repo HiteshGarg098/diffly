@@ -33,7 +33,7 @@
 | 🔒 | **100% Private** | All processing happens in your browser. No server, no tracking, no data sent anywhere. |
 | ↔️ | **Split & Unified views** | Toggle between side-by-side and unified diff layouts. |
 | 🔀 | **Merge changes** | Cherry-pick individual changes with ← ribbon buttons, take all into either side, or undo merges. |
-| 🎨 | **Syntax highlighting** | Auto-detects 30+ languages (JS, TS, Python, Go, Rust, Java, SQL, HTML, CSS, YAML, and more). |
+| 🎨 | **Syntax highlighting** | Auto-detects 20+ languages (JS, TS, Python, Go, Rust, Java, SQL, HTML, CSS, YAML, and more). |
 | 🔍 | **Ignore whitespace & case** | Focus on what matters — hide formatting-only differences. |
 | 📊 | **Change map** | Scrollbar-like overview on the right edge for quick navigation. |
 | 🔗 | **Share links** | Generates a URL with both texts compressed in the fragment (`#d=...`) — never sent to any server. |
@@ -56,12 +56,12 @@ Just visit **[hiteshgarg098.github.io/diffly](https://hiteshgarg098.github.io/di
 
 ## ⌨️ Keyboard Shortcuts
 
-| Shortcut | Action |
-|---|---|
-| `⌘↵` | Find difference |
-| `F7` / `Shift+F7` | Next / previous change |
-| `⌘K` | Command palette |
-| `?` | Keyboard shortcuts help |
+| Mac | Windows / Linux | Action |
+|---|---|---|
+| `⌘↵` | `Ctrl+Enter` | Find difference |
+| `F7` / `Shift+F7` | `F7` / `Shift+F7` | Next / previous change |
+| `⌘K` | `Ctrl+K` | Command palette |
+| `?` | `?` | Keyboard shortcuts help |
 
 ## 🛠️ Tech Stack
 
@@ -107,46 +107,11 @@ The e2e suite (`e2e/perf.spec.ts`) enforces:
 
 Current numbers: ~1.2 s end-to-end, ~65 ms longest task.
 
-## 📁 Project Layout
-
-```
-src/
-  App.tsx                 ← App state, input screen, palette commands
-  components/
-    DiffView.tsx          ← CodeMirror merge view + ribbons, change map (lazy chunk)
-    DiffToolbar.tsx       ← Toolbar: navigate · view · output · ⋯ menu
-    CommandPalette.tsx    ← ⌘K action search (native <dialog>)
-    Mascot.tsx            ← Minus & Plus characters
-    RecentStrip.tsx       ← Saved comparisons on input screen
-    Menu.tsx              ← Accessible dropdown (Export, ⋯, Transform)
-    ShortcutsDialog.tsx   ← Keyboard help (native <dialog>)
-  lib/                    ← Pure logic with unit tests, no React
-    share.ts              ← Share-link encoding (lz-string, URL fragment)
-    export.ts             ← .patch and HTML report (lazy-loaded, uses jsdiff)
-    history.ts            ← Local history rules
-    languages.ts          ← Language detection (no CodeMirror imports)
-    loadLanguage.ts       ← CodeMirror language loader
-    transforms.ts         ← Text transforms (sort, trim, dedupe, JSON…)
-    chunks.ts             ← Change lookup and ribbon geometry
-    commands.ts           ← Palette search
-    diffOptions.ts        ← Ignore whitespace / case
-    flash.ts              ← CodeMirror line flash effects
-    options.ts            ← View options and defaults
-    storage.ts            ← Safe localStorage wrapper
-e2e/                      ← Playwright specs
-```
-
 ## 🤝 Contributing
 
-1. Branch from `main` and open a PR — `main` deploys automatically.
-2. Run `npm run test:all` before pushing. CI runs the same steps and blocks deploy on failure.
+Contributions are welcome! Please read the [Contributing Guide](CONTRIBUTING.md) for setup instructions, architecture guidelines, and the project layout.
 
-### Guidelines
-
-- **Logic in `src/lib/`** with a unit test; keep components thin.
-- **Keep the input screen light:** don't statically import CodeMirror or heavy packages from `App.tsx` or its direct imports. Use `import()` instead.
-- **Everything stays client-side.** No network calls that send compared text anywhere.
-- **Accessible by default.** Use semantic roles and labels — e2e tests select elements by role and name.
+In short: branch from `main`, run `npm run test:all` before pushing, open a PR.
 
 ## 🚢 Deploy
 

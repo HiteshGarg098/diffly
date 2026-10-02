@@ -27,3 +27,6 @@ dist-ssr
 test-results
 playwright-report
 blob-report
+
+# AI assistant config (keep local, not in repo)
+CLAUDE.md
