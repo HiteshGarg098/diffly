@@ -10,18 +10,18 @@
 </p>
 
 <p align="center">
-  <a href="https://hiteshgarg098.github.io/diffcheck/"><strong>🔗 Live Demo</strong></a>&nbsp;&nbsp;·&nbsp;&nbsp;
+  <a href="https://hiteshgarg098.github.io/diffly/"><strong>🔗 Live Demo</strong></a>&nbsp;&nbsp;·&nbsp;&nbsp;
   <a href="#features">Features</a>&nbsp;&nbsp;·&nbsp;&nbsp;
   <a href="#keyboard-shortcuts">Shortcuts</a>&nbsp;&nbsp;·&nbsp;&nbsp;
   <a href="#develop">Develop</a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/actions/workflow/status/HiteshGarg098/diffcheck/deploy.yml?branch=main&label=CI%20%2B%20Deploy&style=flat-square" alt="CI status" />
+  <img src="https://img.shields.io/github/actions/workflow/status/HiteshGarg098/diffly/deploy.yml?branch=main&label=CI%20%2B%20Deploy&style=flat-square" alt="CI status" />
   <img src="https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react" alt="React 19" />
   <img src="https://img.shields.io/badge/CodeMirror-6-d73a49?style=flat-square" alt="CodeMirror 6" />
   <img src="https://img.shields.io/badge/100%25_client--side-no_server-22c55e?style=flat-square" alt="100% client-side" />
-  <img src="https://img.shields.io/github/license/HiteshGarg098/diffcheck?style=flat-square" alt="License" />
+  <img src="https://img.shields.io/github/license/HiteshGarg098/diffly?style=flat-square" alt="License" />
 </p>
 
 ---
@@ -47,7 +47,7 @@
 
 ## 🚀 Quick Start
 
-Just visit **[hiteshgarg098.github.io/diffcheck](https://hiteshgarg098.github.io/diffcheck/)** — no install needed.
+Just visit **[hiteshgarg098.github.io/diffly](https://hiteshgarg098.github.io/diffly/)** — no install needed.
 
 1. Paste or drop text into both panes
 2. Press **Find difference** (`⌘↵`)

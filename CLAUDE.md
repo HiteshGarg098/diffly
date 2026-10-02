@@ -34,4 +34,4 @@ Client-only React 19 + Vite + Tailwind 4 app: text compare/merge (diffchecker al
 
 - Bundle split matters: input screen must stay light. Do not statically import CodeMirror or other heavy packages from `App.tsx`, the components it imports statically (`DiffToolbar`, `CommandPalette`, `Menu`, ...), or `lib/languages.ts`. Use `import()`; `DiffView` is a lazy chunk, and CodeMirror-only helpers (`lib/flash.ts`) may only be imported from it.
 - e2e tests select elements by accessible role and name; keep roles/labels intact. `e2e/perf.spec.ts` fails if a 10k-line diff takes >5s or blocks main thread >2s.
-- Vite `base` is `'/diffcheck/'` for GitHub Pages. Override with `VITE_BASE=/` for a custom domain. Push to `main` runs CI and auto-deploys via `.github/workflows/deploy.yml`; any failure blocks deploy.
+- Vite `base` is `'/diffly/'` for GitHub Pages. Override with `VITE_BASE=/` for a custom domain. Push to `main` runs CI and auto-deploys via `.github/workflows/deploy.yml`; any failure blocks deploy.
