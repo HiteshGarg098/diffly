@@ -416,7 +416,7 @@ export default function App() {
       <header className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-zinc-200 px-4 dark:border-zinc-800">
         <div className="flex items-center gap-2">
           <Mascot mood={mood} size={34} />
-          <span className="font-semibold tracking-tight">sidebyside</span>
+          <span className="font-semibold tracking-tight">diffly</span>
           <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
             beta
           </span>

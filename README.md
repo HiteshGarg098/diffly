@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="public/favicon.svg" width="80" alt="sidebyside logo" />
+  <img src="public/favicon.svg" width="80" alt="diffly logo" />
 </p>
 
-<h1 align="center">sidebyside</h1>
+<h1 align="center">diffly</h1>
 
 <p align="center">
   <strong>A fast, private text compare &amp; merge tool that runs entirely in your browser.</strong><br />
