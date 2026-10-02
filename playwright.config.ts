@@ -12,7 +12,7 @@ export default defineConfig({
   retries: CI ? 1 : 0,
   reporter: CI ? [['github'], ['list']] : 'list',
   use: {
-    baseURL: `http://localhost:${PORT}`,
+    baseURL: `http://localhost:${PORT}/diffcheck/`,
     trace: 'retain-on-failure',
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
